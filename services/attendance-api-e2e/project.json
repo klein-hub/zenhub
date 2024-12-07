@@ -1,0 +1,17 @@
+{
+  "name": "attendance-api-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "implicitDependencies": ["attendance-api"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "services/attendance-api-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["attendance-api:build"]
+    }
+  }
+}

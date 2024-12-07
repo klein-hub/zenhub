@@ -1,0 +1,96 @@
+{
+  "name": "helpdesk-portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/helpdesk-portal/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/helpdesk-portal",
+        "index": "apps/helpdesk-portal/src/index.html",
+        "baseHref": "/",
+        "main": "apps/helpdesk-portal/src/main.ts",
+        "tsConfig": "apps/helpdesk-portal/tsconfig.app.json",
+        "assets": [
+          "apps/helpdesk-portal/src/favicon.ico",
+          "apps/helpdesk-portal/src/assets"
+        ],
+        "styles": ["apps/helpdesk-portal/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/helpdesk-portal/webpack.config.ts",
+        "postcssConfig": "apps/helpdesk-portal/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/helpdesk-portal/src/environments/environment.ts",
+              "with": "apps/helpdesk-portal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/helpdesk-portal/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "helpdesk-portal:build",
+        "hmr": true,
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "helpdesk-portal:build:development"
+        },
+        "production": {
+          "buildTarget": "helpdesk-portal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "helpdesk-portal:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "helpdesk-portal:serve:development"
+        },
+        "production": {
+          "serveTarget": "helpdesk-portal:serve:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/helpdesk-portal/jest.config.ts"
+      }
+    }
+  }
+}

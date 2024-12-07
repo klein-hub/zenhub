@@ -1,0 +1,96 @@
+{
+  "name": "customer-portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/customer-portal/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/customer-portal",
+        "index": "apps/customer-portal/src/index.html",
+        "baseHref": "/",
+        "main": "apps/customer-portal/src/main.ts",
+        "tsConfig": "apps/customer-portal/tsconfig.app.json",
+        "assets": [
+          "apps/customer-portal/src/favicon.ico",
+          "apps/customer-portal/src/assets"
+        ],
+        "styles": ["apps/customer-portal/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/customer-portal/webpack.config.ts",
+        "postcssConfig": "apps/customer-portal/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/customer-portal/src/environments/environment.ts",
+              "with": "apps/customer-portal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/customer-portal/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "customer-portal:build",
+        "hmr": true,
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "customer-portal:build:development"
+        },
+        "production": {
+          "buildTarget": "customer-portal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "customer-portal:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "customer-portal:serve:development"
+        },
+        "production": {
+          "serveTarget": "customer-portal:serve:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/customer-portal/jest.config.ts"
+      }
+    }
+  }
+}
