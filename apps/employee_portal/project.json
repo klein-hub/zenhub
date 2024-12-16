@@ -1,0 +1,93 @@
+{
+  "name": "employee_portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/employee_portal/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/employee_portal",
+        "index": "apps/employee_portal/src/index.html",
+        "baseHref": "/",
+        "main": "apps/employee_portal/src/main.ts",
+        "tsConfig": "apps/employee_portal/tsconfig.app.json",
+        "assets": [
+          "apps/employee_portal/src/favicon.ico",
+          "apps/employee_portal/src/assets"
+        ],
+        "styles": ["apps/employee_portal/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/employee_portal/webpack.config.ts",
+        "postcssConfig": "apps/employee_portal/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/employee_portal/src/environments/environment.ts",
+              "with": "apps/employee_portal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/employee_portal/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "employee_portal:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "employee_portal:build:development"
+        },
+        "production": {
+          "buildTarget": "employee_portal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/employee_portal/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "employee_portal:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "employee_portal:serve:development"
+        },
+        "production": {
+          "serveTarget": "employee_portal:serve:production"
+        }
+      }
+    }
+  }
+}

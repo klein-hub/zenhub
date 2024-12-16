@@ -1,4 +1,4 @@
-import { ModuleFederationConfig } from '@nx/webpack';
+import { ModuleFederationConfig } from '@nx/module-federation';
 
 const config: ModuleFederationConfig = {
   name: 'shell',
@@ -14,7 +14,15 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: [],
+  remotes: [
+    'employee-portal',
+    'attendance-portal',
+    'dashboard',
+    'payroll-portal',
+    'inventory-portal',
+    'post-portal',
+    'sales-portal',
+  ],
 };
 
 /**

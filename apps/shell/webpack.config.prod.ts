@@ -1,7 +1,7 @@
 import { composePlugins, withNx } from '@nx/webpack';
 import { withReact } from '@nx/react';
-import { withModuleFederation } from '@nx/react/module-federation';
-import { ModuleFederationConfig } from '@nx/webpack';
+import { withModuleFederation } from '@nx/module-federation/webpack';
+import { ModuleFederationConfig } from '@nx/module-federation';
 
 import baseConfig from './module-federation.config';
 
@@ -24,7 +24,15 @@ const prodConfig: ModuleFederationConfig = {
    *   ['app2', 'http://example.com/path/to/app2/remoteEntry.js'],
    * ]
    */
-  remotes: [],
+  remotes: [
+    ['employee-portal', 'http://localhost:4201/'],
+    ['attendance-portal', 'http://localhost:4202/'],
+    ['dashboard', 'http://localhost:4203/'],
+    ['payroll-portal', 'http://localhost:4204/'],
+    ['inventory-portal', 'http://localhost:4205/'],
+    ['post-portal', 'http://localhost:4206/'],
+    ['sales-portal', 'http://localhost:4207/'],
+  ],
 };
 
 // Nx plugins for webpack to build config object from Nx options and context.

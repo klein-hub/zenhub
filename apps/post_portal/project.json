@@ -1,0 +1,93 @@
+{
+  "name": "post_portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/post_portal/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/post_portal",
+        "index": "apps/post_portal/src/index.html",
+        "baseHref": "/",
+        "main": "apps/post_portal/src/main.ts",
+        "tsConfig": "apps/post_portal/tsconfig.app.json",
+        "assets": [
+          "apps/post_portal/src/favicon.ico",
+          "apps/post_portal/src/assets"
+        ],
+        "styles": ["apps/post_portal/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/post_portal/webpack.config.ts",
+        "postcssConfig": "apps/post_portal/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/post_portal/src/environments/environment.ts",
+              "with": "apps/post_portal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/post_portal/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "post_portal:build",
+        "hmr": true,
+        "port": 4206
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "post_portal:build:development"
+        },
+        "production": {
+          "buildTarget": "post_portal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/post_portal/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "post_portal:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "post_portal:serve:development"
+        },
+        "production": {
+          "serveTarget": "post_portal:serve:production"
+        }
+      }
+    }
+  }
+}

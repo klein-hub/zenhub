@@ -1,0 +1,93 @@
+{
+  "name": "attendance_portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/attendance_portal/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/attendance_portal",
+        "index": "apps/attendance_portal/src/index.html",
+        "baseHref": "/",
+        "main": "apps/attendance_portal/src/main.ts",
+        "tsConfig": "apps/attendance_portal/tsconfig.app.json",
+        "assets": [
+          "apps/attendance_portal/src/favicon.ico",
+          "apps/attendance_portal/src/assets"
+        ],
+        "styles": ["apps/attendance_portal/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/attendance_portal/webpack.config.ts",
+        "postcssConfig": "apps/attendance_portal/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/attendance_portal/src/environments/environment.ts",
+              "with": "apps/attendance_portal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/attendance_portal/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "attendance_portal:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "attendance_portal:build:development"
+        },
+        "production": {
+          "buildTarget": "attendance_portal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/attendance_portal/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "attendance_portal:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "attendance_portal:serve:development"
+        },
+        "production": {
+          "serveTarget": "attendance_portal:serve:production"
+        }
+      }
+    }
+  }
+}

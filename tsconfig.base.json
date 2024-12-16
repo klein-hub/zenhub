@@ -15,7 +15,16 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "shared_libs/Module": ["apps/shared_libs/src/remote-entry.ts"]
+      "@zenhub/shared-libs": ["apps/shared-libs/src/index.ts"],
+      "attendance_portal/Module": [
+        "apps/attendance_portal/src/remote-entry.ts"
+      ],
+      "dashboard/Module": ["apps/dashboard/src/remote-entry.ts"],
+      "employee_portal/Module": ["apps/employee_portal/src/remote-entry.ts"],
+      "inventory_portal/Module": ["apps/inventory_portal/src/remote-entry.ts"],
+      "payroll_portal/Module": ["apps/payroll_portal/src/remote-entry.ts"],
+      "post_portal/Module": ["apps/post_portal/src/remote-entry.ts"],
+      "sales_portal/Module": ["apps/sales_portal/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
